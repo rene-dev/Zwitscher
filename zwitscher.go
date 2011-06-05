@@ -56,6 +56,10 @@ func main() {
 	textview.SetEditable(false)
 	textview.SetCursorVisible(false)
 	scrolledwin.Add(textview)
+	
+	//text field for new tweets
+	entry := gtk.Entry()
+	
 	vbox.Add(scrolledwin)
 
 	buffer := textview.GetBuffer()
@@ -106,6 +110,7 @@ func main() {
 			button.SetSensitive(true)
 		}()
 	})
+	vbox.PackEnd(entry, false, false, 0)
 	vbox.PackEnd(button, false, false, 0)
 
 	window.Add(vbox)

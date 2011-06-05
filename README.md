@@ -23,7 +23,7 @@ Compiling and Installing
 
   * Download and Install Zwitscher:
 
-    $ hg clone (https://github.com/mogoh/Zwitscher  
+    $ git clone https://github.com/mogoh/Zwitscher  
     $ cd Zwitscher  
     $ make  
 

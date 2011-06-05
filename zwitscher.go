@@ -15,6 +15,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"path"
 )
 
 func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
@@ -46,7 +47,7 @@ func main() {
 	gdk.ThreadsInit()
 	gtk.Init(&os.Args)
 	window := gtk.Window(gtk.GTK_WINDOW_TOPLEVEL)
-	window.SetTitle("Zwitscher")
+	window.SetTitle("Zwitscher!")
 	window.Connect("destroy", func() {
 		gtk.MainQuit()
 	})
@@ -58,6 +59,18 @@ func main() {
 	//--------------------------------------------------------
 	notebook := gtk.Notebook()
 
+	scrolledwin := gtk.ScrolledWindow(nil, nil)
+	notebook.AppendPage(scrolledwin, gtk.Label("Home"))
+	scrolledwin = gtk.ScrolledWindow(nil, nil)
+	notebook.AppendPage(scrolledwin, gtk.Label("Mentions"))
+	scrolledwin = gtk.ScrolledWindow(nil, nil)
+	notebook.AppendPage(scrolledwin, gtk.Label("Messages"))
+	scrolledwin = gtk.ScrolledWindow(nil, nil)
+	notebook.AppendPage(scrolledwin, gtk.Label("Faviores"))
+	scrolledwin = gtk.ScrolledWindow(nil, nil)
+	notebook.AppendPage(scrolledwin, gtk.Label("Retweets"))
+	scrolledwin = gtk.ScrolledWindow(nil, nil)
+	notebook.AppendPage(scrolledwin, gtk.Label("Search"))
 	//--------------------------------------------------------
 	// Public Timeline View
 	//--------------------------------------------------------
@@ -122,33 +135,35 @@ func main() {
 	// End Public Timeline View
 	//--------------------------------------------------------
 
-	scrolledwin := gtk.ScrolledWindow(nil, nil)
-	notebook.AppendPage(scrolledwin, gtk.Label("Home"))
-	scrolledwin = gtk.ScrolledWindow(nil, nil)
-	notebook.AppendPage(scrolledwin, gtk.Label("Mentions"))
-	scrolledwin = gtk.ScrolledWindow(nil, nil)
-	notebook.AppendPage(scrolledwin, gtk.Label("Messages"))
-	scrolledwin = gtk.ScrolledWindow(nil, nil)
-	notebook.AppendPage(scrolledwin, gtk.Label("Faviores"))
-	scrolledwin = gtk.ScrolledWindow(nil, nil)
-	notebook.AppendPage(scrolledwin, gtk.Label("Retweets"))
-	scrolledwin = gtk.ScrolledWindow(nil, nil)
-	notebook.AppendPage(scrolledwin, gtk.Label("Search"))
 	notebook.AppendPage(vboxPT, gtk.Label("Public Timeline"))
 	vbox.Add(notebook)
 
 	//--------------------------------------------------------
-	// Text Fild for Tweets
+	// Fild for Tweets
 	//--------------------------------------------------------
-	entry := gtk.Entry()
+	hbox := gtk.HBox(false, 1)
 
-	vbox.PackEnd(entry, false, false, 0)
+	//--------------------------------------------------------
+	// GtkImage
+	//--------------------------------------------------------
+	dir, _ := path.Split(os.Args[0])
+	imagefile := path.Join(dir, "/Awesome Smiley Original.jpg")
+	image := gtk.ImageFromFile(imagefile)
+	hbox.Add(image)
+
+	entry := gtk.Entry()
+	hbox.Add(entry)
+
+	buttonZwitscher := gtk.ButtonWithLabel("Zwitscher!")
+	hbox.Add(buttonZwitscher)
+
+	vbox.PackEnd(hbox, false, false, 0)
 
 	//--------------------------------------------------------
 	// Event
 	//--------------------------------------------------------
 	window.Add(vbox)
-	window.SetSizeRequest(800, 500)
+	window.SetSizeRequest(500, 600)
 	window.ShowAll()
 	gdk.ThreadsEnter()
 	gtk.Main()

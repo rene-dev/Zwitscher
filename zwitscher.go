@@ -40,7 +40,9 @@ func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
 }
 
 func main() {
-    //Setting up the GTK-Foo
+	//--------------------------------------------------------
+	// Setting up the GTK-Foo
+	//--------------------------------------------------------
 	gdk.ThreadsInit()
 	gtk.Init(&os.Args)
 	window := gtk.Window(gtk.GTK_WINDOW_TOPLEVEL)
@@ -51,16 +53,20 @@ func main() {
 
 	vbox := gtk.VBox(false, 1)
 
-	scrolledwin := gtk.ScrolledWindow(nil, nil)
+	//--------------------------------------------------------
+	// gtk.Notebook
+	//--------------------------------------------------------
+	notebook := gtk.Notebook()
+
+	//--------------------------------------------------------
+	// Public Timeline View
+	//--------------------------------------------------------
+	vboxPT := gtk.VBox(false, 1)
+	scrolledwinPT := gtk.ScrolledWindow(nil, nil)
 	textview := gtk.TextView()
 	textview.SetEditable(false)
 	textview.SetCursorVisible(false)
-	scrolledwin.Add(textview)
-	
-	//text field for new tweets
-	entry := gtk.Entry()
-	
-	vbox.Add(scrolledwin)
+	scrolledwinPT.Add(textview)
 
 	buffer := textview.GetBuffer()
 
@@ -110,9 +116,37 @@ func main() {
 			button.SetSensitive(true)
 		}()
 	})
-	vbox.PackEnd(entry, false, false, 0)
-	vbox.PackEnd(button, false, false, 0)
+	vboxPT.Add(scrolledwinPT)
+	vboxPT.PackEnd(button, false, false, 0)
+	//--------------------------------------------------------
+	// End Public Timeline View
+	//--------------------------------------------------------
 
+	scrolledwin := gtk.ScrolledWindow(nil, nil)
+	notebook.AppendPage(scrolledwin, gtk.Label("Home"))
+	scrolledwin = gtk.ScrolledWindow(nil, nil)
+	notebook.AppendPage(scrolledwin, gtk.Label("Mentions"))
+	scrolledwin = gtk.ScrolledWindow(nil, nil)
+	notebook.AppendPage(scrolledwin, gtk.Label("Messages"))
+	scrolledwin = gtk.ScrolledWindow(nil, nil)
+	notebook.AppendPage(scrolledwin, gtk.Label("Faviores"))
+	scrolledwin = gtk.ScrolledWindow(nil, nil)
+	notebook.AppendPage(scrolledwin, gtk.Label("Retweets"))
+	scrolledwin = gtk.ScrolledWindow(nil, nil)
+	notebook.AppendPage(scrolledwin, gtk.Label("Search"))
+	notebook.AppendPage(vboxPT, gtk.Label("Public Timeline"))
+	vbox.Add(notebook)
+
+	//--------------------------------------------------------
+	// Text Fild for Tweets
+	//--------------------------------------------------------
+	entry := gtk.Entry()
+
+	vbox.PackEnd(entry, false, false, 0)
+
+	//--------------------------------------------------------
+	// Event
+	//--------------------------------------------------------
 	window.Add(vbox)
 	window.SetSizeRequest(800, 500)
 	window.ShowAll()
@@ -120,3 +154,4 @@ func main() {
 	gtk.Main()
 	gdk.ThreadsLeave()
 }
+

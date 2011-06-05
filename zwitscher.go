@@ -1,3 +1,7 @@
+// This File is based on mattn example of go-gtk programms.
+// Actualy it is basicly the same, but not for long.
+// https://github.com/mattn/go-gtk/blob/master/example/twitter/twitter.go
+
 package main
 
 import (

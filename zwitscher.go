@@ -40,6 +40,10 @@ func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
 	return loader.GetPixbuf()
 }
 
+func sendTweet(text string) {
+	print(text,"\n")
+	}
+
 func main() {
 	//--------------------------------------------------------
 	// Setting up the GTK-Foo
@@ -151,10 +155,17 @@ func main() {
 	image := gtk.ImageFromFile(imagefile)
 	hbox.Add(image)
 
-	entry := gtk.Entry()
-	hbox.Add(entry)
+	newTweetTextField := gtk.Entry()
+	hbox.Add(newTweetTextField)
 
 	buttonZwitscher := gtk.ButtonWithLabel("Zwitscher!")
+	buttonZwitscher.SetTooltipMarkup("Tweet")
+
+	buttonZwitscher.Clicked(func() {
+		sendTweet(newTweetTextField.GetText())
+		newTweetTextField.SetText("")
+	})
+
 	hbox.Add(buttonZwitscher)
 
 	vbox.PackEnd(hbox, false, false, 0)

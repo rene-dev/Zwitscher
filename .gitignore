@@ -3,5 +3,6 @@ _go_.8
 _obj
 *.cgo?.*
 _cgo_*
+*.6
 zwitscher
 

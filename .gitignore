@@ -1,2 +1,7 @@
-zwitscher
 _go_.8
+*~
+_obj
+*.cgo?.*
+_cgo_*
+zwitscher
+

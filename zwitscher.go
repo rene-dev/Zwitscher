@@ -40,10 +40,11 @@ func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
 }
 
 func main() {
+    //Setting up the GTK-Foo
 	gdk.ThreadsInit()
 	gtk.Init(&os.Args)
 	window := gtk.Window(gtk.GTK_WINDOW_TOPLEVEL)
-	window.SetTitle("Twitter!")
+	window.SetTitle("Zwitscher")
 	window.Connect("destroy", func() {
 		gtk.MainQuit()
 	})

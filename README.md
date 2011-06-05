@@ -8,21 +8,24 @@ Zwitscher is going to be a new Twitter client, written in Go and GTK.
 Compiling and Installing
 ------------------------
 
+
   * [Install](http://golang.org/doc/install.html) Go as discribed
-  * Update Go to tip (notice the update tip, instead of release)
+  * Update Go to tip (notice the update tip, instead of release):
 
-    $ cd go/src
-    $ hg pull
-    $ hg update tip
-    $ ./all.bash
+    $ cd go/src  
+    $ hg pull  
+    $ hg update tip  
+    $ ./all.bash  
 
-  * Install go-gtk
+  * Install go-gtk (don't forget to install gtk development packages befor):
+
     $ goinstall github.com/mattn/go-gtk/gtk
-  * Download and Install Zwitscher
 
-    $ hg clone (https://github.com/mogoh/Zwitscher
-    $ cd Zwitscher
-    $ make
+  * Download and Install Zwitscher:
+
+    $ hg clone (https://github.com/mogoh/Zwitscher  
+    $ cd Zwitscher  
+    $ make  
 
 
 

@@ -8,6 +8,7 @@ import (
 	"github.com/mattn/go-gtk/gtk"
 	"github.com/mattn/go-gtk/gdk"
 	"github.com/mattn/go-gtk/gdkpixbuf"
+	"github.com/mattn/go-gtk/glib"
 	"http"
 	"json"
 	"bytes"
@@ -16,6 +17,7 @@ import (
 	"os"
 	"strings"
 	"path"
+	"unsafe"
 )
 
 func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
@@ -41,7 +43,7 @@ func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
 }
 
 func sendTweet(text string) {
-	print(text,"\n")
+	println(text)
 	}
 
 func main() {
@@ -55,6 +57,7 @@ func main() {
 	window.Connect("destroy", func() {
 		gtk.MainQuit()
 	})
+
 
 	vbox := gtk.VBox(false, 1)
 
@@ -154,19 +157,30 @@ func main() {
 	imagefile := path.Join(dir, "/Awesome Smiley Original.jpg")
 	image := gtk.ImageFromFile(imagefile)
 	hbox.Add(image)
-
-	newTweetTextField := gtk.Entry()
-	hbox.Add(newTweetTextField)
-
+	
 	buttonZwitscher := gtk.ButtonWithLabel("Zwitscher!")
+	newTweetTextField := gtk.Entry()
+	charCounterLabel := gtk.Label("140")
+	
 	buttonZwitscher.SetTooltipMarkup("Tweet")
 
 	buttonZwitscher.Clicked(func() {
 		sendTweet(newTweetTextField.GetText())
 		newTweetTextField.SetText("")
 	})
-
+	
+	newTweetTextField.Connect("key-press-event", func(ctx *glib.CallbackContext) {
+		arg := ctx.Args(0)
+		kev := *(**gdk.EventKey)(unsafe.Pointer(&arg))
+		if(kev.Keyval == 65293 && newTweetTextField.GetText() != ""){//pressed enter, and text is not empty
+			sendTweet(newTweetTextField.GetText())
+			newTweetTextField.SetText("")
+		}//Count remaining characters here
+	})
+	
+	hbox.Add(newTweetTextField)
 	hbox.Add(buttonZwitscher)
+	hbox.Add(charCounterLabel)
 
 	vbox.PackEnd(hbox, false, false, 0)
 

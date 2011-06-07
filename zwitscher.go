@@ -175,7 +175,11 @@ func main() {
 		if(kev.Keyval == 65293 && newTweetTextField.GetText() != ""){//pressed enter, and text is not empty
 			sendTweet(newTweetTextField.GetText())
 			newTweetTextField.SetText("")
-		}//Count remaining characters here
+		} else {
+		    print(string(len(newTweetTextField.GetText())))
+		
+		}
+		
 	})
 	
 	hbox.Add(newTweetTextField)
@@ -188,7 +192,7 @@ func main() {
 	// Event
 	//--------------------------------------------------------
 	window.Add(vbox)
-	window.SetSizeRequest(500, 600)
+	window.SetSizeRequest(400, 500)
 	window.ShowAll()
 	gdk.ThreadsEnter()
 	gtk.Main()

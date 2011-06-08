@@ -1,10 +1,6 @@
-package main
-
-import (
-	"./gui"
-)
+package zwitscher
 
 func main() {
-	gui.Gui()
+	Gui()
 }
 

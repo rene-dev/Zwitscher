@@ -1,4 +1,4 @@
-package gui
+package zwitscher
 
 import (
 	"github.com/mattn/go-gtk/gtk"
@@ -16,7 +16,6 @@ import (
 	"unsafe"
 	"strconv"
 	"utf8"
-	"./controller"
 )
 
 
@@ -98,7 +97,7 @@ func Gui() {
 	buttonZwitscher.SetTooltipMarkup("Tweet")
 
 	buttonZwitscher.Clicked(func() {
-		controller.SendTweet(newTweetTextField.GetText())
+		SendTweet(newTweetTextField.GetText())
 		newTweetTextField.SetText("")
 	})
 
@@ -106,7 +105,7 @@ func Gui() {
 		arg := ctx.Args(0)
 		kev := *(**gdk.EventKey)(unsafe.Pointer(&arg))
 		if kev.Keyval == 65293 && newTweetTextField.GetText() != "" { //pressed enter, and text is not empty
-			controller.SendTweet(newTweetTextField.GetText())
+			SendTweet(newTweetTextField.GetText())
 			newTweetTextField.SetText("")
 		} else {
 			length := utf8.RuneCountInString(newTweetTextField.GetText())

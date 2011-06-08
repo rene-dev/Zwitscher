@@ -1,7 +1,6 @@
 include $(GOROOT)/src/Make.inc
 
 TARG=zwitscher
-GOFILES=\
-	zwitscher.go\
+GOFILES=controller.go gui.go zwitscher.go
 
 include $(GOROOT)/src/Make.cmd

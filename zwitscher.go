@@ -1,11 +1,10 @@
 package main
 
-import (
-//"twitter"
-//"fmt"
-)
+import "gotter"
 
 func main() {
-	//api := twitter.NewApi();
+	Connect()
+	gotter.PostTweet(accounts.Credentials, "https://api.twitter.com/1/statuses/update.json", map[string]string{"status": "Eat this, @simonszu ! Hard codet Tweets!"})
 	Gui()
 }
+

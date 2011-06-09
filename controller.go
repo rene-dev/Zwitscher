@@ -8,6 +8,8 @@ import (
 	"io"
 	"io/ioutil"
 	"strings"
+	"gotter"
+	"github.com/garyburd/twister/oauth"
 )
 
 type Tweet struct {
@@ -40,6 +42,22 @@ type Tweet struct {
 			Url     string
 		}
 	}
+}
+
+type Accounts struct {
+	Name        string
+	Credentials *oauth.Credentials
+}
+
+var accounts Accounts
+
+func Connect() {
+	accounts := new(Accounts)
+	//	file, config := gotter.GetConfig()
+	_, config := gotter.GetConfig()
+	//	token, authorized, err := gotter.GetAccessToken(config)
+	token, _, _ := gotter.GetAccessToken(config)
+	accounts.Credentials = token
 }
 
 func UpdatePublicTimeline(callback func(tweet *Tweet)) {
@@ -92,3 +110,4 @@ func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
 func SendTweet(text string) {
 	println(text)
 }
+

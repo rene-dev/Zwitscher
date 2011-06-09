@@ -97,19 +97,21 @@ func Gui() {
 	buttonZwitscher.SetTooltipMarkup("Tweet")
 
 	buttonZwitscher.Clicked(func() {
+		charCounterLabel.SetLabel("140")
 		SendTweet(newTweetTextField.GetText())
 		newTweetTextField.SetText("")
 	})
 
-	newTweetTextField.Connect("key-press-event", func(ctx *glib.CallbackContext) {
+	newTweetTextField.Connect("key-release-event", func(ctx *glib.CallbackContext) {
 		arg := ctx.Args(0)
 		kev := *(**gdk.EventKey)(unsafe.Pointer(&arg))
 		if kev.Keyval == 65293 && newTweetTextField.GetText() != "" { //pressed enter, and text is not empty
+			charCounterLabel.SetLabel("140")
 			SendTweet(newTweetTextField.GetText())
 			newTweetTextField.SetText("")
 		} else {
 			length := utf8.RuneCountInString(newTweetTextField.GetText())
-			charCounterLabel.SetLabel((string)(strconv.Itoa(140 - length))) //update does not work correct :(
+			charCounterLabel.SetLabel((string)(strconv.Itoa(140 - length)))
 		}
 	})
 

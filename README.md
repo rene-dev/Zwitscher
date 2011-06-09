@@ -19,9 +19,13 @@ Compiling and Installing
     $ hg update tip  
     $ ./all.bash  
 
-  * Install go-gtk (don't forget to install gtk development packages befor):
+  * Install go-gtk (don't forget to install gtk development packages before):
 
     $ goinstall github.com/mattn/go-gtk/gtk
+    
+  * Install twister oauth
+
+    $ goinstall github.com/garyburd/twister/oauth
 
   * Download and Install Zwitscher:
 

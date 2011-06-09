@@ -16,10 +16,10 @@ type Tweet struct {
 	Source     string
 	CreatedAt  string "created_at"
 	User       struct {
-		Name            string
-		ScreenName      string "screen_name"
-		FollowersCount  int    "followers_count"
-		ProfileImageURL string "profile_image_url"
+		Name               string
+		ScreenName         string "screen_name"
+		FollowersCount     int    "followers_count"
+		ProfileImageURL    string "profile_image_url"
 		ProfileImagePixbuf *gdkpixbuf.GdkPixbuf
 	}
 	Place *struct {

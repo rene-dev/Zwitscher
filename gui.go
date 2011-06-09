@@ -3,17 +3,8 @@ package main
 import (
 	"github.com/mattn/go-gtk/gtk"
 	"github.com/mattn/go-gtk/gdk"
-	//	"github.com/mattn/go-gtk/gdkpixbuf"
-	//"github.com/mattn/go-gtk/glib"
-	//	"http"
-	//	"json"
-	//	"bytes"
-	//	"io"
-	//	"io/ioutil"
 	"os"
-	//	"strings"
 	"path/filepath"
-	//"unsafe"
 	"strconv"
 	"utf8"
 )
@@ -63,7 +54,7 @@ func Gui() {
 
 	buffer := textview.GetBuffer()
 	tag := buffer.CreateTag("blue", map[string]string{
-			"foreground": "#0000FF", "weight": "700"})
+		"foreground": "#0000FF", "weight": "700"})
 
 	button := gtk.ButtonWithLabel("Update Timeline")
 	button.SetTooltipMarkup("update <b>public timeline</b>")
@@ -147,4 +138,3 @@ func Gui() {
 	gtk.Main()
 	gdk.ThreadsLeave()
 }
-

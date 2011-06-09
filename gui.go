@@ -3,17 +3,8 @@ package main
 import (
 	"github.com/mattn/go-gtk/gtk"
 	"github.com/mattn/go-gtk/gdk"
-	//	"github.com/mattn/go-gtk/gdkpixbuf"
-	"github.com/mattn/go-gtk/glib"
-	//	"http"
-	//	"json"
-	//	"bytes"
-	//	"io"
-	//	"io/ioutil"
 	"os"
-	//	"strings"
-	"path"
-	"unsafe"
+	"path/filepath"
 	"strconv"
 	"utf8"
 )
@@ -61,12 +52,28 @@ func Gui() {
 	textview.SetCursorVisible(false)
 	scrolledwinPT.Add(textview)
 
-	//	buffer := textview.GetBuffer()
+	buffer := textview.GetBuffer()
+	tag := buffer.CreateTag("blue", map[string]string{
+		"foreground": "#0000FF", "weight": "700"})
 
-	//	tag := buffer.CreateTag("blue", map[string]string{
-	//		"foreground": "#0000FF", "weight": "700"})
 	button := gtk.ButtonWithLabel("Update Timeline")
 	button.SetTooltipMarkup("update <b>public timeline</b>")
+	button.Clicked(func() {
+		UpdatePublicTimeline(func(tweet *Tweet) {
+			var iter gtk.GtkTextIter
+			gdk.ThreadsEnter()
+			buffer.GetStartIter(&iter)
+			buffer.InsertPixbuf(&iter, tweet.User.ProfileImagePixbuf)
+			gdk.ThreadsLeave()
+			gdk.ThreadsEnter()
+			buffer.Insert(&iter, " ")
+			buffer.InsertWithTag(&iter, tweet.User.Name, tag)
+			buffer.Insert(&iter, ":"+tweet.Text+"\n")
+			gtk.MainIterationDo(false)
+			gdk.ThreadsLeave()
+		})
+	})
+
 	//	button.Clicked()
 	vboxPT.Add(scrolledwinPT)
 	vboxPT.PackEnd(button, false, false, 0)
@@ -85,8 +92,8 @@ func Gui() {
 	//--------------------------------------------------------
 	// Tweetbar
 	//--------------------------------------------------------
-	dir, _ := path.Split(os.Args[0])
-	imagefile := path.Join(dir, "/Awesome Smiley Original.jpg")
+	dir, _ := filepath.Split(os.Args[0])
+	imagefile := filepath.Join(dir, "Awesome Smiley Original.jpg")
 	image := gtk.ImageFromFile(imagefile)
 	hbox.Add(image)
 
@@ -102,19 +109,18 @@ func Gui() {
 		newTweetTextField.SetText("")
 	})
 
-	newTweetTextField.Connect("key-release-event", func(ctx *glib.CallbackContext) {
-		arg := ctx.Args(0)
-		kev := *(**gdk.EventKey)(unsafe.Pointer(&arg))
-		if kev.Keyval == 65293 && newTweetTextField.GetText() != "" { //pressed enter, and text is not empty
+	newTweetTextField.Connect("key-release-event", func() {
+		length := utf8.RuneCountInString(newTweetTextField.GetText())
+		charCounterLabel.SetLabel((string)(strconv.Itoa(140 - length)))
+	})
+
+	newTweetTextField.Connect("activate", func() {
+		if newTweetTextField.GetText() != "" { //pressed enter, and text is not empty
 			charCounterLabel.SetLabel("140")
 			SendTweet(newTweetTextField.GetText())
 			newTweetTextField.SetText("")
-		} else {
-			length := utf8.RuneCountInString(newTweetTextField.GetText())
-			charCounterLabel.SetLabel((string)(strconv.Itoa(140 - length)))
 		}
 	})
-
 	hbox.Add(newTweetTextField)
 	hbox.Add(buttonZwitscher)
 	hbox.Add(charCounterLabel)
@@ -127,8 +133,8 @@ func Gui() {
 	window.Add(vbox)
 	window.SetSizeRequest(500, 600)
 	window.ShowAll()
+
 	gdk.ThreadsEnter()
 	gtk.Main()
 	gdk.ThreadsLeave()
 }
-

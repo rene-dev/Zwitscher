@@ -1,12 +1,11 @@
 package main
 
 import (
-	"twitter"
-	"fmt"
+//"twitter"
+//"fmt"
 )
 
 func main() {
-	api := twitter.NewApi();
+	//api := twitter.NewApi();
 	Gui()
 }
-

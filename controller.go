@@ -1,26 +1,49 @@
 package main
 
 import (
-//	"github.com/mattn/go-gtk/gtk"
-//"github.com/mattn/go-gtk/gdk"
-//	"github.com/mattn/go-gtk/gdkpixbuf"
-//"http"
-//	"json"
-//	"bytes"
-//	"io"
-//	"io/ioutil"
-//	"os"
-//	"strings"
-//	"path"
-//	"unsafe"
+	"github.com/mattn/go-gtk/gdkpixbuf"
+	"http"
+	"json"
+	"bytes"
+	"io"
+	"io/ioutil"
+	"strings"
 )
 
-/*
-func UpdatePublicTimeline() {
+type Tweet struct {
+	Text       string
+	Identifier string "id_str"
+	Source     string
+	CreatedAt  string "created_at"
+	User       struct {
+		Name               string
+		ScreenName         string "screen_name"
+		FollowersCount     int    "followers_count"
+		ProfileImageURL    string "profile_image_url"
+		ProfileImagePixbuf *gdkpixbuf.GdkPixbuf
+	}
+	Place *struct {
+		Id       string
+		FullName string "full_name"
+	}
+	Entities struct {
+		HashTags []struct {
+			Indices [2]int
+			Text    string
+		}
+		UserMentions []struct {
+			Indices    [2]int
+			ScreenName string "screen_name"
+		}    "user_mentions"
+		Urls []struct {
+			Indices [2]int
+			Url     string
+		}
+	}
+}
+
+func UpdatePublicTimeline(callback func(tweet *Tweet)) {
 	go func() {
-		gdk.ThreadsEnter()
-		button.SetSensitive(false)
-		gdk.ThreadsLeave()
 		r, err := http.Get("http://twitter.com/statuses/public_timeline.json")
 		if err == nil {
 			var b []byte
@@ -34,33 +57,16 @@ func UpdatePublicTimeline() {
 				println(err.String())
 				return
 			}
-			var j interface{}
-			json.NewDecoder(bytes.NewBuffer(b)).Decode(&j)
-			arr := j.([]interface{})
-			for i := 0; i < len(arr); i++ {
-				data := arr[i].(map[string]interface{})
-				icon := data["user"].(map[string]interface{})["profile_image_url"].(string)
-				var iter gtk.GtkTextIter
-				gdk.ThreadsEnter()
-				buffer.GetStartIter(&iter)
-				buffer.InsertPixbuf(&iter, url2pixbuf(icon))
-				gdk.ThreadsLeave()
-				name := data["user"].(map[string]interface{})["screen_name"].(string)
-				text := data["text"].(string)
-				gdk.ThreadsEnter()
-				buffer.Insert(&iter, " ")
-				buffer.InsertWithTag(&iter, name, tag)
-				buffer.Insert(&iter, ":"+text+"\n")
-				gtk.MainIterationDo(false)
-				gdk.ThreadsLeave()
+			var tweets []Tweet
+			json.NewDecoder(bytes.NewBuffer(b)).Decode(&tweets)
+			for _, tweet := range tweets {
+				tweet.User.ProfileImagePixbuf = url2pixbuf(tweet.User.ProfileImageURL)
+				callback(&tweet)
 			}
 		}
-		button.SetSensitive(true)
 	}()
 }
-*/
 
-/*
 func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
 	r, err := http.Get(url)
 	if err != nil {
@@ -82,9 +88,7 @@ func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
 	loader.Close()
 	return loader.GetPixbuf()
 }
-*/
 
 func SendTweet(text string) {
 	println(text)
 }
-

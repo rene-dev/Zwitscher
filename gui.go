@@ -1,4 +1,4 @@
-package zwitscher
+package main
 
 import (
 	"github.com/mattn/go-gtk/gtk"

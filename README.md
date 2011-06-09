@@ -12,6 +12,7 @@ Compiling and Installing
 
 
   * [Install](http://golang.org/doc/install.html) Go as discribed
+  * [Install](https://github.com/jb55/go-twitter) Go as discribed
   * Update Go to tip (notice the update tip, instead of release):
 
     $ cd go/src  
@@ -22,10 +23,6 @@ Compiling and Installing
   * Install go-gtk (don't forget to install gtk development packages before):
 
     $ goinstall github.com/mattn/go-gtk/gtk
-    
-  * Install twister oauth
-
-    $ goinstall github.com/garyburd/twister/oauth
 
   * Download and Install Zwitscher:
 

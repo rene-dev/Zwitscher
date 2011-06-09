@@ -28,7 +28,7 @@ Compiling and Installing
 
     $ git clone https://github.com/mogoh/Zwitscher  
     $ cd Zwitscher  
-    $ make  
+    $ gomake  
 
 
 

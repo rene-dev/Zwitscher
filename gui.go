@@ -12,7 +12,7 @@ import (
 	//	"io/ioutil"
 	"os"
 	//	"strings"
-	"path"
+	"path/filepath"
 	//"unsafe"
 	"strconv"
 	"utf8"
@@ -85,8 +85,8 @@ func Gui() {
 	//--------------------------------------------------------
 	// Tweetbar
 	//--------------------------------------------------------
-	dir, _ := path.Split(os.Args[0])
-	imagefile := path.Join(dir, "/Awesome Smiley Original.jpg")
+	dir, _ := filepath.Split(os.Args[0])
+	imagefile := filepath.Join(dir, "Awesome Smiley Original.jpg")
 	image := gtk.ImageFromFile(imagefile)
 	hbox.Add(image)
 

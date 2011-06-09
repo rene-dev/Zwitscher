@@ -61,12 +61,28 @@ func Gui() {
 	textview.SetCursorVisible(false)
 	scrolledwinPT.Add(textview)
 
-	//	buffer := textview.GetBuffer()
+	buffer := textview.GetBuffer()
+	tag := buffer.CreateTag("blue", map[string]string{
+			"foreground": "#0000FF", "weight": "700"})
 
-	//	tag := buffer.CreateTag("blue", map[string]string{
-	//		"foreground": "#0000FF", "weight": "700"})
 	button := gtk.ButtonWithLabel("Update Timeline")
 	button.SetTooltipMarkup("update <b>public timeline</b>")
+	button.Clicked(func() {
+		UpdatePublicTimeline(func(tweet *Tweet) {
+			var iter gtk.GtkTextIter
+			gdk.ThreadsEnter()
+			buffer.GetStartIter(&iter)
+			buffer.InsertPixbuf(&iter, tweet.User.ProfileImagePixbuf)
+			gdk.ThreadsLeave()
+			gdk.ThreadsEnter()
+			buffer.Insert(&iter, " ")
+			buffer.InsertWithTag(&iter, tweet.User.Name, tag)
+			buffer.Insert(&iter, ":"+tweet.Text+"\n")
+			gtk.MainIterationDo(false)
+			gdk.ThreadsLeave()
+		})
+	})
+
 	//	button.Clicked()
 	vboxPT.Add(scrolledwinPT)
 	vboxPT.PackEnd(button, false, false, 0)
@@ -126,6 +142,7 @@ func Gui() {
 	window.Add(vbox)
 	window.SetSizeRequest(500, 600)
 	window.ShowAll()
+
 	gdk.ThreadsEnter()
 	gtk.Main()
 	gdk.ThreadsLeave()

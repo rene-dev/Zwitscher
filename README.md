@@ -12,7 +12,7 @@ Compiling and Installing
 
 
   * [Install](http://golang.org/doc/install.html) Go as discribed
-  * [Install](https://github.com/jb55/go-twitter) Go as discribed
+  * [Install](https://github.com/jb55/go-twitter) go-twitter as discribed
   * Update Go to tip (notice the update tip, instead of release):
 
     $ cd go/src  

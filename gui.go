@@ -4,7 +4,7 @@ import (
 	"github.com/mattn/go-gtk/gtk"
 	"github.com/mattn/go-gtk/gdk"
 	//	"github.com/mattn/go-gtk/gdkpixbuf"
-	"github.com/mattn/go-gtk/glib"
+	//"github.com/mattn/go-gtk/glib"
 	//	"http"
 	//	"json"
 	//	"bytes"
@@ -13,7 +13,7 @@ import (
 	"os"
 	//	"strings"
 	"path"
-	"unsafe"
+	//"unsafe"
 	"strconv"
 	"utf8"
 )
@@ -102,19 +102,18 @@ func Gui() {
 		newTweetTextField.SetText("")
 	})
 
-	newTweetTextField.Connect("key-release-event", func(ctx *glib.CallbackContext) {
-		arg := ctx.Args(0)
-		kev := *(**gdk.EventKey)(unsafe.Pointer(&arg))
-		if kev.Keyval == 65293 && newTweetTextField.GetText() != "" { //pressed enter, and text is not empty
+	newTweetTextField.Connect("key-release-event", func() {
+		length := utf8.RuneCountInString(newTweetTextField.GetText())
+		charCounterLabel.SetLabel((string)(strconv.Itoa(140 - length)))
+	})
+
+	newTweetTextField.Connect("activate", func() {
+		if newTweetTextField.GetText() != "" { //pressed enter, and text is not empty
 			charCounterLabel.SetLabel("140")
 			SendTweet(newTweetTextField.GetText())
 			newTweetTextField.SetText("")
-		} else {
-			length := utf8.RuneCountInString(newTweetTextField.GetText())
-			charCounterLabel.SetLabel((string)(strconv.Itoa(140 - length)))
 		}
 	})
-
 	hbox.Add(newTweetTextField)
 	hbox.Add(buttonZwitscher)
 	hbox.Add(charCounterLabel)

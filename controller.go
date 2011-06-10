@@ -46,7 +46,10 @@ type Tweet struct {
 }
 
 func Connect() Accounts{
+	var account Accounts
 	file, config := gotter.GetConfig()
+	config["ClientToken"] = "lhCgJRAE1ECQzwVXfs5NQ"
+	config["ClientSecret"] = "qk9i30vuzWHspsRttKsYrnoKSw9XBmWHdsis76z4"
 	token, authorized, err := gotter.GetAccessToken(config)
 	if err != nil {
 		log.Fatal("faild to get access token:", err)
@@ -61,9 +64,8 @@ func Connect() Accounts{
 			log.Fatal("failed to store file:", err)
 		}
 	}
-	accounts.Credentials = token
-	return accounts
-	//gotter.PostTweet(accounts.Credentials, "https://api.twitter.com/1/statuses/update.json", map[string]string{"status": "so, jetzt"})
+	account.Credentials = token
+	return account
 }
 
 func UpdatePublicTimeline(callback func(tweet *Tweet)) {

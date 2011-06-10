@@ -1,10 +1,18 @@
 package main
 
-import "gotter"
+import (
+	"github.com/garyburd/twister/oauth"
+	)
+
+type Accounts struct {
+	Name        string
+	Credentials *oauth.Credentials
+}
+
+var accounts Accounts
 
 func main() {
-	Connect()
-	gotter.PostTweet(accounts.Credentials, "https://api.twitter.com/1/statuses/update.json", map[string]string{"status": "Eat this, @simonszu ! Hard codet Tweets!"})
+	accounts = Connect()
 	Gui()
 }
 

@@ -9,7 +9,8 @@ import (
 	"io/ioutil"
 	"strings"
 	"gotter"
-	"github.com/garyburd/twister/oauth"
+	//"github.com/garyburd/twister/oauth"
+	"log"
 )
 
 type Tweet struct {
@@ -44,20 +45,25 @@ type Tweet struct {
 	}
 }
 
-type Accounts struct {
-	Name        string
-	Credentials *oauth.Credentials
-}
-
-var accounts Accounts
-
-func Connect() {
-	accounts := new(Accounts)
-	//	file, config := gotter.GetConfig()
-	_, config := gotter.GetConfig()
-	//	token, authorized, err := gotter.GetAccessToken(config)
-	token, _, _ := gotter.GetAccessToken(config)
+func Connect() Accounts{
+	file, config := gotter.GetConfig()
+	token, authorized, err := gotter.GetAccessToken(config)
+	if err != nil {
+		log.Fatal("faild to get access token:", err)
+	}
+	if authorized {
+		b, err := json.MarshalIndent(config, "", "  ")
+		if err != nil {
+			log.Fatal("failed to store file:", err)
+		}
+		err = ioutil.WriteFile(file, b, 0700)
+		if err != nil {
+			log.Fatal("failed to store file:", err)
+		}
+	}
 	accounts.Credentials = token
+	return accounts
+	//gotter.PostTweet(accounts.Credentials, "https://api.twitter.com/1/statuses/update.json", map[string]string{"status": "so, jetzt"})
 }
 
 func UpdatePublicTimeline(callback func(tweet *Tweet)) {
@@ -108,6 +114,6 @@ func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
 }
 
 func SendTweet(text string) {
-	println(text)
+	gotter.PostTweet(accounts.Credentials, "https://api.twitter.com/1/statuses/update.json", map[string]string{"status": text})
 }
 

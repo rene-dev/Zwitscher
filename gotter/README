@@ -1,0 +1,25 @@
+gotter is a twitter package for go, based on https://github.com/mattn/twty by Yasuhiro Matsumoto <mattn.jp@gmail.com>
+
+Install:
+
+  1. install golang environment.
+
+    see: http://golang.org/doc/install.html
+    for japanese: http://golang.jp/install
+    for windows user: http://code.google.com/p/gomingw/downloads/list
+
+    And install twister.
+
+    # goinstall github.com/garyburd/twister/oauth
+
+    And install go-iconv.
+
+    # git clone https://github.com/sloonz/go-iconv.git
+    # cd go-iconv
+    # make install
+
+    That's all!
+
+  2. install
+
+    # goinstall github.com/rene-dev/gotter

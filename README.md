@@ -35,4 +35,4 @@ Compiling and Installing
 Version
 -------
 
-Version: 0 ("Zero")
+Version: 0.0.1

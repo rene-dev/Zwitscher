@@ -1,0 +1,9 @@
+.8
+*~
+_obj
+*.cgo?.*
+_cgo_*
+*.6
+zwitscher
+edit.sh
+example/test

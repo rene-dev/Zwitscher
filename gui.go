@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"utf8"
+	"gotter"
 )
 
 func Gui() {
@@ -36,9 +37,17 @@ func Gui() {
 
 	buttonUT := gtk.ButtonWithLabel("Update Timeline")
 	buttonUT.Clicked(func() {
-		tweet := TweetWidget()
-		vboxscrolledwinHome.PackEnd(tweet, false, false, 0)
-		tweet.Show()
+		var tweet gotter.Tweet
+		tweets, err := gotter.GetTweets(accounts.Credentials, "https://api.twitter.com/1/statuses/home_timeline.json", map[string]string{})
+		if err != nil {
+			println("failed to get tweets:", err)
+		}
+		for i := len(tweets) - 1; i >= 0; i-- {
+			tweet.Text = tweets[i].Text
+			tweetwidget := TweetWidget(tweet)
+			vboxscrolledwinHome.PackEnd(tweetwidget, false, false, 0)
+			tweetwidget.Show()
+		}
 	})
 	vboxHome.PackEnd(buttonUT, false, false, 0)
 
@@ -51,12 +60,12 @@ func Gui() {
 	notebook.AppendPage(scrolledwin, gtk.Label("Mentions"))
 	scrolledwin = gtk.ScrolledWindow(nil, nil)
 	notebook.AppendPage(scrolledwin, gtk.Label("Messages"))
-	scrolledwin = gtk.ScrolledWindow(nil, nil)
-	notebook.AppendPage(scrolledwin, gtk.Label("Faviores"))
-	scrolledwin = gtk.ScrolledWindow(nil, nil)
-	notebook.AppendPage(scrolledwin, gtk.Label("Retweets"))
-	scrolledwin = gtk.ScrolledWindow(nil, nil)
-	notebook.AppendPage(scrolledwin, gtk.Label("Search"))
+	//scrolledwin = gtk.ScrolledWindow(nil, nil)
+	//notebook.AppendPage(scrolledwin, gtk.Label("Faviores"))
+	//scrolledwin = gtk.ScrolledWindow(nil, nil)
+	//notebook.AppendPage(scrolledwin, gtk.Label("Retweets"))
+	//scrolledwin = gtk.ScrolledWindow(nil, nil)
+	//notebook.AppendPage(scrolledwin, gtk.Label("Search"))
 
 	//--------------------------------------------------------
 	// Public Timeline View
@@ -152,8 +161,8 @@ func Gui() {
 	gdk.ThreadsLeave()
 }
 
-func TweetWidget() *gtk.GtkLabel {
-	label := gtk.Label("Tweet Foo")
+func TweetWidget(tweet gotter.Tweet) *gtk.GtkLabel {
+	label := gtk.Label(tweet.Text)
 	return label
 }
 

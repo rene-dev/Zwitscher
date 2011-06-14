@@ -97,7 +97,7 @@ func Gui() {
 			gtk.MainIterationDo(false)
 			gdk.ThreadsLeave()
 		})
-	})i
+	})
 
 	//	button.Clicked()
 	vboxPT.Add(scrolledwinPT)

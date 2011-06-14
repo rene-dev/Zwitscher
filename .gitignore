@@ -6,3 +6,4 @@ _cgo_*
 *.6
 zwitscher
 edit.sh
+.DS_Store

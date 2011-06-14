@@ -22,14 +22,40 @@ func Gui() {
 	})
 
 	vbox := gtk.VBox(false, 1)
+	
+	notebook := gtk.Notebook()
+	//--------------------------------------------------------
+	// Home View
+	//--------------------------------------------------------
+	//vboxHome := gtk.VBox(false, 1)
+	scrolledwinHome := gtk.ScrolledWindow(nil, nil)
+	textviewHome := gtk.TextView()
+	textviewHome.SetEditable(false)
+	textviewHome.SetCursorVisible(false)
+	scrolledwinHome.Add(textviewHome)
+	bufferHome := textviewHome.GetBuffer()
+	tag := bufferHome.CreateTag("blue", map[string]string{
+		"foreground": "#0000FF", "weight": "700"})
+			var iter gtk.GtkTextIter
+			gdk.ThreadsEnter()
+			bufferHome.GetStartIter(&iter)
+			//bufferHome.InsertPixbuf(&iter, tweet.User.ProfileImagePixbuf)
+			gdk.ThreadsLeave()
+			gdk.ThreadsEnter()
+			bufferHome.Insert(&iter, " ")
+			bufferHome.InsertWithTag(&iter, "username", tag)
+			bufferHome.Insert(&iter, ":"+"text"+"\n")
+			gtk.MainIterationDo(false)
+			gdk.ThreadsLeave()
 
+	//buttonHome.Clicked()
+	//vboxPT.Add(scrolledwinPT)
+	//vboxPT.PackEnd(button, false, false, 0)
+	notebook.AppendPage(scrolledwinHome, gtk.Label("Home"))
 	//--------------------------------------------------------
 	// gtk.Notebook
 	//--------------------------------------------------------
-	notebook := gtk.Notebook()
-
 	scrolledwin := gtk.ScrolledWindow(nil, nil)
-	notebook.AppendPage(scrolledwin, gtk.Label("Home"))
 	scrolledwin = gtk.ScrolledWindow(nil, nil)
 	notebook.AppendPage(scrolledwin, gtk.Label("Mentions"))
 	scrolledwin = gtk.ScrolledWindow(nil, nil)
@@ -52,8 +78,8 @@ func Gui() {
 	scrolledwinPT.Add(textview)
 
 	buffer := textview.GetBuffer()
-	tag := buffer.CreateTag("blue", map[string]string{
-		"foreground": "#0000FF", "weight": "700"})
+	//tag := buffer.CreateTag("blue", map[string]string{
+	//	"foreground": "#0000FF", "weight": "700"})
 
 	button := gtk.ButtonWithLabel("Update Timeline")
 	button.SetTooltipMarkup("update <b>public timeline</b>")

@@ -1,7 +1,6 @@
 Zwitscher - mehr als nur piep piep!
 ===================================
-[t͡svɪtʃɹ]
-=========
+![zwitscher](https://github.com/mogoh/Zwitscher/raw/master/zwitscher.png "[t͡svɪtʃɹ]")
 
 Zwitscher wird ein neuer Twitterclient, geschrieben in Go und GTK.
 

@@ -144,7 +144,7 @@ func Gui() {
 	// Event
 	//--------------------------------------------------------
 	window.Add(vbox)
-	window.SetSizeRequest(500, 600)
+	window.SetSizeRequest(400, 550)
 	window.ShowAll()
 
 	gdk.ThreadsEnter()

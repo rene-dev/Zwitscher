@@ -43,10 +43,10 @@ func Gui() {
 			println("failed to get tweets:", err)
 		}
 		for i := len(tweets) - 1; i >= 0; i-- {
-			tweet.Text = tweets[i].Text
+			tweet = tweets[i]
 			tweetwidget := TweetWidget(tweet)
 			vboxscrolledwinHome.PackEnd(tweetwidget, false, false, 0)
-			tweetwidget.Show()
+			tweetwidget.ShowAll()
 		}
 	})
 	vboxHome.PackEnd(buttonUT, false, false, 0)
@@ -161,8 +161,31 @@ func Gui() {
 	gdk.ThreadsLeave()
 }
 
-func TweetWidget(tweet gotter.Tweet) *gtk.GtkLabel {
-	label := gtk.Label(tweet.Text)
-	return label
-}
+func TweetWidget(tweet gotter.Tweet) *gtk.GtkFrame {
+	frame := gtk.Frame(tweet.User.ScreenName)
+	hbox := gtk.HBox(false, 1)
+	dir, _ := filepath.Split(os.Args[0])
+	//gtk_image_new_from_pixbuf is unsupported in go-gtk )=
+	imagefile := filepath.Join(dir, "Awesome Smiley Original.jpg")
+	image := gtk.ImageFromFile(imagefile)
+	vbox := gtk.VBox(false, 1)
+	tweettext := gtk.TextView()
+	tweettext.SetWrapMode(gtk.GTK_WRAP_WORD)
+	tweettext.SetEditable(false)
+	tweetbuffer := tweettext.GetBuffer()
 
+	tweetbuffer.SetText(tweet.Text)
+
+	whenfromtext := gtk.Label(tweet.CreatedAt)
+	//wherefromtext := gtk.Label(tweet.Source)
+
+	hbox.PackStart(image, false, false, 0)
+	hbox.Add(vbox)
+	vbox.PackStart(tweettext, false, false, 0)
+	vbox.PackEnd(whenfromtext, false, false, 0)
+	//vbox.PackEnd(wherefromtext, false, false, 0)
+
+	frame.Add(hbox)
+
+	return frame
+}

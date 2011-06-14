@@ -38,7 +38,7 @@ func Gui() {
 	buttonUT.Clicked(func() {
 		tweet := TweetWidget()
 		vboxscrolledwinHome.PackEnd(tweet, false, false, 0)
-		tweet.Show()
+		tweet.ShowAll()
 	})
 	vboxHome.PackEnd(buttonUT, false, false, 0)
 
@@ -152,8 +152,29 @@ func Gui() {
 	gdk.ThreadsLeave()
 }
 
-func TweetWidget() *gtk.GtkLabel {
-	label := gtk.Label("Tweet Foo")
-	return label
+func TweetWidget() *gtk.GtkFrame {
+	frame := gtk.Frame("mogoh42")
+	hbox := gtk.HBox(false, 1)
+	dir, _ := filepath.Split(os.Args[0])
+	imagefile := filepath.Join(dir, "Awesome Smiley Original.jpg")
+	image := gtk.ImageFromFile(imagefile)
+	vbox := gtk.VBox(false, 1)
+	tweettext := gtk.TextView()
+	tweettext.SetWrapMode(gtk.GTK_WRAP_WORD)
+	tweettext.SetEditable(false)
+	tweetbuffer := tweettext.GetBuffer()
+
+	tweetbuffer.SetText("This text is an exact 140 characters long example tweet, to see what it will look like, if tweets are going to appear in this Timeline. Yay!")
+
+	whenfromtext := gtk.Label("13:37 from Zwitscher")
+
+	hbox.PackStart(image, false, false, 0)
+	hbox.Add(vbox)
+	vbox.PackStart(tweettext, false, false, 0)
+	vbox.PackEnd(whenfromtext, false, false, 0)
+
+	frame.Add(hbox)
+
+	return frame
 }
 

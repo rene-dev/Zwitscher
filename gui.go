@@ -22,36 +22,27 @@ func Gui() {
 	})
 
 	vbox := gtk.VBox(false, 1)
-	
+
 	notebook := gtk.Notebook()
 	//--------------------------------------------------------
 	// Home View
 	//--------------------------------------------------------
-	//vboxHome := gtk.VBox(false, 1)
+	vboxHome := gtk.VBox(false, 1)
 	scrolledwinHome := gtk.ScrolledWindow(nil, nil)
-	textviewHome := gtk.TextView()
-	textviewHome.SetEditable(false)
-	textviewHome.SetCursorVisible(false)
-	scrolledwinHome.Add(textviewHome)
-	bufferHome := textviewHome.GetBuffer()
-	tag := bufferHome.CreateTag("blue", map[string]string{
-		"foreground": "#0000FF", "weight": "700"})
-			var iter gtk.GtkTextIter
-			gdk.ThreadsEnter()
-			bufferHome.GetStartIter(&iter)
-			//bufferHome.InsertPixbuf(&iter, tweet.User.ProfileImagePixbuf)
-			gdk.ThreadsLeave()
-			gdk.ThreadsEnter()
-			bufferHome.Insert(&iter, " ")
-			bufferHome.InsertWithTag(&iter, "username", tag)
-			bufferHome.Insert(&iter, ":"+"text"+"\n")
-			gtk.MainIterationDo(false)
-			gdk.ThreadsLeave()
+	scrolledwinHome.SetPolicy(gtk.GTK_POLICY_NEVER, gtk.GTK_POLICY_ALWAYS) //Disable hscrollbar, enable vscrollbar
+	vboxHome.Add(scrolledwinHome)
+	vboxscrolledwinHome := gtk.VBox(false, 1)
+	scrolledwinHome.AddWithViewPort(vboxscrolledwinHome)
 
-	//buttonHome.Clicked()
-	//vboxPT.Add(scrolledwinPT)
-	//vboxPT.PackEnd(button, false, false, 0)
-	notebook.AppendPage(scrolledwinHome, gtk.Label("Home"))
+	buttonUT := gtk.ButtonWithLabel("Update Timeline")
+	buttonUT.Clicked(func() {
+		tweet := TweetWidget()
+		vboxscrolledwinHome.PackEnd(tweet, false, false, 0)
+		tweet.Show()
+	})
+	vboxHome.PackEnd(buttonUT, false, false, 0)
+
+	notebook.AppendPage(vboxHome, gtk.Label("Home"))
 	//--------------------------------------------------------
 	// gtk.Notebook
 	//--------------------------------------------------------
@@ -78,8 +69,8 @@ func Gui() {
 	scrolledwinPT.Add(textview)
 
 	buffer := textview.GetBuffer()
-	//tag := buffer.CreateTag("blue", map[string]string{
-	//	"foreground": "#0000FF", "weight": "700"})
+	tag := buffer.CreateTag("blue", map[string]string{
+		"foreground": "#0000FF", "weight": "700"})
 
 	button := gtk.ButtonWithLabel("Update Timeline")
 	button.SetTooltipMarkup("update <b>public timeline</b>")
@@ -114,9 +105,6 @@ func Gui() {
 	//--------------------------------------------------------
 	hbox := gtk.HBox(false, 1)
 
-	//--------------------------------------------------------
-	// Tweetbar
-	//--------------------------------------------------------
 	dir, _ := filepath.Split(os.Args[0])
 	imagefile := filepath.Join(dir, "Awesome Smiley Original.jpg")
 	image := gtk.ImageFromFile(imagefile)
@@ -163,3 +151,9 @@ func Gui() {
 	gtk.Main()
 	gdk.ThreadsLeave()
 }
+
+func TweetWidget() *gtk.GtkLabel {
+	label := gtk.Label("Tweet Foo")
+	return label
+}
+

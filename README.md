@@ -11,7 +11,6 @@ Compiling and Installing
 
 
   * [Install](http://golang.org/doc/install.html) Go as described
-  * [Install](https://github.com/rene-dev/gotter) gotter as described
 
   * Update Go to tip (notice the update tip, instead of release):
 
@@ -28,11 +27,11 @@ Compiling and Installing
 
     $ git clone https://github.com/mogoh/Zwitscher  
     $ cd Zwitscher  
-    $ gomake  
+    $ gomake install
 
 
 
 Version
 -------
 
-Version: 0.0.1
+Version: 0 ("Zero")

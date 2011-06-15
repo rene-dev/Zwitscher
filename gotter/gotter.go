@@ -87,7 +87,7 @@ func ClientAuth(requestToken *oauth.Credentials) (*oauth.Credentials, os.Error) 
 	} else {
 		b = b[0:len(b)-1]
 	}
-	accessToken, _, err := oauthClient.RequestToken(requestToken, string(b))
+	accessToken, _, err := oauthClient.RequestToken(http.DefaultClient, requestToken, string(b))
 	if err != nil {
 		log.Fatal("failed to request token:", err)
 	}
@@ -105,7 +105,7 @@ func GetAccessToken(config map[string]string) (*oauth.Credentials, bool, os.Erro
 	if foundToken && foundSecret {
 		token = &oauth.Credentials{accessToken, accessSecert}
 	} else {
-		requestToken, err := oauthClient.RequestTemporaryCredentials("")
+		requestToken, err := oauthClient.RequestTemporaryCredentials(http.DefaultClient, "")
 		if err != nil {
 			log.Print("failed to request temporary credentials:", err)
 			return nil, false, err
@@ -124,7 +124,7 @@ func GetAccessToken(config map[string]string) (*oauth.Credentials, bool, os.Erro
 }
 
 func GetTweets(token *oauth.Credentials, url string, opt map[string]string) ([]Tweet, os.Error) {
-	param := make(web.ParamMap)
+	param := make(web.Values)
 	for k, v := range opt {
 		param.Set(k, v)
 	}
@@ -182,12 +182,12 @@ func ShowTweets(tweets []Tweet, verbose bool) {
 }
 
 func PostTweet(token *oauth.Credentials, url string, opt map[string]string) os.Error {
-	param := make(web.ParamMap)
+	param := make(web.Values)
 	for k, v := range opt {
 		param.Set(k, v)
 	}
 	oauthClient.SignParam(token, "POST", url, param)
-	res, err := http.PostForm(url, param.StringMap())
+	res, err := http.PostForm(url, http.Values(param))
 	if err != nil {
 		log.Println("failed to post tweet:", err)
 		return err

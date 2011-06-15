@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"utf8"
 	"gotter"
+	//"time"
 )
 
 func Gui() {
@@ -117,7 +118,7 @@ func Gui() {
 	dir, _ := filepath.Split(os.Args[0])
 	imagefile := filepath.Join(dir, "Awesome Smiley Original.jpg")
 	image := gtk.ImageFromFile(imagefile)
-	hbox.PackStart(image, false, false, 0)
+	hbox.Add(image)
 
 	buttonZwitscher := gtk.ButtonWithLabel("Zwitscher!")
 	newTweetTextField := gtk.Entry()
@@ -143,9 +144,9 @@ func Gui() {
 			newTweetTextField.SetText("")
 		}
 	})
-	hbox.PackStartDefaults(newTweetTextField)
-	hbox.PackStart(charCounterLabel, false, false, 0)
-	hbox.PackEnd(buttonZwitscher, false, false, 0)
+	hbox.Add(newTweetTextField)
+	hbox.Add(buttonZwitscher)
+	hbox.Add(charCounterLabel)
 
 	vbox.PackEnd(hbox, false, false, 0)
 
@@ -175,11 +176,13 @@ func TweetWidget(tweet gotter.Tweet) *gtk.GtkFrame {
 	tweetbuffer := tweettext.GetBuffer()
 
 	tweetbuffer.SetText(tweet.Text)
-	//	whenfromtext := gtk.Label("At " + tweet.CreatedAt + " via " + tweet.Source)
+	//tweettime, _ := time.Parse(time.RubyDate,tweet.CreatedAt)
+
 	whenfromtext := gtk.Label(tweet.CreatedAt)
+	//wherefromtext := gtk.Label(tweet.Source)
 
 	hbox.PackStart(image, false, false, 0)
-	hbox.PackEndDefaults(vbox)
+	hbox.Add(vbox)
 	vbox.PackStart(tweettext, false, false, 0)
 	vbox.PackEnd(whenfromtext, false, false, 0)
 	//vbox.PackEnd(wherefromtext, false, false, 0)
@@ -188,4 +191,3 @@ func TweetWidget(tweet gotter.Tweet) *gtk.GtkFrame {
 
 	return frame
 }
-

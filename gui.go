@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"utf8"
 	"gotter"
-	//"time"
+	"time"
 )
 
 func Gui() {
@@ -180,16 +180,23 @@ func TweetWidget(tweet gotter.Tweet) *gtk.GtkFrame {
 	tweetbuffer := tweettext.GetBuffer()
 
 	tweetbuffer.SetText(tweet.Text)
-	//tweettime, _ := time.Parse(time.RubyDate,tweet.CreatedAt)
 
-	whenfromtext := gtk.Label(tweet.CreatedAt)
-	//wherefromtext := gtk.Label(tweet.Source)
+	tweettime, _ := time.Parse(time.RubyDate, tweet.CreatedAt)
+	hour := (string)(strconv.Itoa(tweettime.Hour))
+	var minute string
+	if tweettime.Minute < 10 {
+		minute = "0" + (string)(strconv.Itoa(tweettime.Minute))
+	} else {
+		minute = (string)(strconv.Itoa(tweettime.Minute))
+	}
+	whenfromtext := gtk.Label(hour + ":" + minute)
+	//	wherefromtext := gtk.Label(tweet.Source)
 
 	hbox.PackStart(image, false, false, 0)
 	hbox.PackEndDefaults(vbox)
 	vbox.PackStart(tweettext, false, false, 0)
 	vbox.PackEnd(whenfromtext, false, false, 0)
-	//vbox.PackEnd(wherefromtext, false, false, 0)
+	//	vbox.PackEnd(wherefromtext, false, false, 0)
 
 	frame.Add(hbox)
 

@@ -45,8 +45,8 @@ func Gui() {
 		}
 		for i := len(tweets) - 1; i >= 0; i-- {
 			tweet = tweets[i]
-			id,_ := strconv.Atoi64(tweet.Identifier)
-			if(accounts.Maxreadid < id){
+			id, _ := strconv.Atoi64(tweet.Identifier)
+			if accounts.Maxreadid < id {
 				tweetwidget := TweetWidget(tweet)
 				vboxscrolledwinHome.PackEnd(tweetwidget, false, false, 0)
 				tweetwidget.ShowAll()
@@ -122,7 +122,7 @@ func Gui() {
 	dir, _ := filepath.Split(os.Args[0])
 	imagefile := filepath.Join(dir, "Awesome Smiley Original.jpg")
 	image := gtk.ImageFromFile(imagefile)
-	hbox.Add(image)
+	hbox.PackStart(image, false, false, 0)
 
 	buttonZwitscher := gtk.ButtonWithLabel("Zwitscher!")
 	newTweetTextField := gtk.Entry()
@@ -148,9 +148,9 @@ func Gui() {
 			newTweetTextField.SetText("")
 		}
 	})
-	hbox.Add(newTweetTextField)
-	hbox.Add(buttonZwitscher)
-	hbox.Add(charCounterLabel)
+	hbox.PackStartDefaults(newTweetTextField)
+	hbox.PackStart(charCounterLabel, false, false, 0)
+	hbox.PackEnd(buttonZwitscher, false, false, 0)
 
 	vbox.PackEnd(hbox, false, false, 0)
 
@@ -186,7 +186,7 @@ func TweetWidget(tweet gotter.Tweet) *gtk.GtkFrame {
 	//wherefromtext := gtk.Label(tweet.Source)
 
 	hbox.PackStart(image, false, false, 0)
-	hbox.Add(vbox)
+	hbox.PackEndDefaults(vbox)
 	vbox.PackStart(tweettext, false, false, 0)
 	vbox.PackEnd(whenfromtext, false, false, 0)
 	//vbox.PackEnd(wherefromtext, false, false, 0)
@@ -195,3 +195,4 @@ func TweetWidget(tweet gotter.Tweet) *gtk.GtkFrame {
 
 	return frame
 }
+

@@ -45,9 +45,13 @@ func Gui() {
 		}
 		for i := len(tweets) - 1; i >= 0; i-- {
 			tweet = tweets[i]
-			tweetwidget := TweetWidget(tweet)
-			vboxscrolledwinHome.PackEnd(tweetwidget, false, false, 0)
-			tweetwidget.ShowAll()
+			id,_ := strconv.Atoi64(tweet.Identifier)
+			if(accounts.Maxreadid < id){
+				tweetwidget := TweetWidget(tweet)
+				vboxscrolledwinHome.PackEnd(tweetwidget, false, false, 0)
+				tweetwidget.ShowAll()
+				accounts.Maxreadid = id
+			}
 		}
 	})
 	vboxHome.PackEnd(buttonUT, false, false, 0)

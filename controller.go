@@ -4,12 +4,12 @@ import (
 	"github.com/mattn/go-gtk/gdkpixbuf"
 	"http"
 	"json"
-	"bytes"
+//	"bytes"
 	"io"
 	"io/ioutil"
 	"strings"
 	"gotter"
-	//"github.com/garyburd/twister/oauth"
+	"github.com/garyburd/twister/oauth"
 	"log"
 )
 
@@ -45,6 +45,13 @@ type Tweet struct {
 	}
 }
 
+
+type Accounts struct {
+	Name        string
+	Credentials *oauth.Credentials
+	Maxreadid	int64
+}
+
 func Connect() Accounts{
 	var account Accounts
 	file, config := gotter.GetConfig()
@@ -68,30 +75,6 @@ func Connect() Accounts{
 	return account
 }
 
-func UpdatePublicTimeline(callback func(tweet *Tweet)) {
-	go func() {
-		r, err := http.Get("http://twitter.com/statuses/public_timeline.json")
-		if err == nil {
-			var b []byte
-			if r.ContentLength == -1 {
-				b, err = ioutil.ReadAll(r.Body)
-			} else {
-				b = make([]byte, r.ContentLength)
-				_, err = io.ReadFull(r.Body, b)
-			}
-			if err != nil {
-				println(err.String())
-				return
-			}
-			var tweets []Tweet
-			json.NewDecoder(bytes.NewBuffer(b)).Decode(&tweets)
-			for _, tweet := range tweets {
-				tweet.User.ProfileImagePixbuf = url2pixbuf(tweet.User.ProfileImageURL)
-				callback(&tweet)
-			}
-		}
-	}()
-}
 
 func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
 	r, err := http.Get(url)

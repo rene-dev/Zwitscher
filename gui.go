@@ -24,17 +24,17 @@ func Gui() {
 	})
 
 	vbox := gtk.VBox(false, 1)
-
 	notebook := gtk.Notebook()
+
 	//--------------------------------------------------------
 	// Home View
 	//--------------------------------------------------------
 	vboxHome := gtk.VBox(false, 1)
-	scrolledwinHome := gtk.ScrolledWindow(nil, nil)
-	scrolledwinHome.SetPolicy(gtk.GTK_POLICY_NEVER, gtk.GTK_POLICY_ALWAYS) //Disable hscrollbar, enable vscrollbar
-	vboxHome.Add(scrolledwinHome)
-	vboxscrolledwinHome := gtk.VBox(false, 1)
-	scrolledwinHome.AddWithViewPort(vboxscrolledwinHome)
+	scrolledWinHome := gtk.ScrolledWindow(nil, nil)
+	scrolledWinHome.SetPolicy(gtk.GTK_POLICY_NEVER, gtk.GTK_POLICY_ALWAYS) //Disable hscrollbar, enable vscrollbar
+	vboxHome.Add(scrolledWinHome)
+	vboxScrolledWinHome := gtk.VBox(false, 1)
+	scrolledWinHome.AddWithViewPort(vboxScrolledWinHome)
 
 	buttonUT := gtk.ButtonWithLabel("Update Timeline")
 	buttonUT.Clicked(func() {
@@ -48,70 +48,27 @@ func Gui() {
 			id, _ := strconv.Atoi64(tweet.Identifier)
 			if accounts.Maxreadid < id {
 				tweetwidget := TweetWidget(tweet)
-				vboxscrolledwinHome.PackEnd(tweetwidget, false, false, 0)
+				vboxScrolledWinHome.PackEnd(tweetwidget, false, false, 0)
 				tweetwidget.ShowAll()
 				accounts.Maxreadid = id
 			}
 		}
 	})
 	vboxHome.PackEnd(buttonUT, false, false, 0)
-
 	notebook.AppendPage(vboxHome, gtk.Label("Home"))
+
 	//--------------------------------------------------------
-	// gtk.Notebook
+	// Mentions View
 	//--------------------------------------------------------
 	scrolledwin := gtk.ScrolledWindow(nil, nil)
-	scrolledwin = gtk.ScrolledWindow(nil, nil)
 	notebook.AppendPage(scrolledwin, gtk.Label("Mentions"))
+
+	//--------------------------------------------------------
+	// Messages View
+	//--------------------------------------------------------
 	scrolledwin = gtk.ScrolledWindow(nil, nil)
 	notebook.AppendPage(scrolledwin, gtk.Label("Messages"))
-	//scrolledwin = gtk.ScrolledWindow(nil, nil)
-	//notebook.AppendPage(scrolledwin, gtk.Label("Faviores"))
-	//scrolledwin = gtk.ScrolledWindow(nil, nil)
-	//notebook.AppendPage(scrolledwin, gtk.Label("Retweets"))
-	//scrolledwin = gtk.ScrolledWindow(nil, nil)
-	//notebook.AppendPage(scrolledwin, gtk.Label("Search"))
 
-	//--------------------------------------------------------
-	// Public Timeline View
-	//--------------------------------------------------------
-	vboxPT := gtk.VBox(false, 1)
-	scrolledwinPT := gtk.ScrolledWindow(nil, nil)
-	textview := gtk.TextView()
-	textview.SetEditable(false)
-	textview.SetCursorVisible(false)
-	scrolledwinPT.Add(textview)
-
-	buffer := textview.GetBuffer()
-	tag := buffer.CreateTag("blue", map[string]string{
-		"foreground": "#0000FF", "weight": "700"})
-
-	button := gtk.ButtonWithLabel("Update Timeline")
-	button.SetTooltipMarkup("update <b>public timeline</b>")
-	button.Clicked(func() {
-		UpdatePublicTimeline(func(tweet *Tweet) {
-			var iter gtk.GtkTextIter
-			gdk.ThreadsEnter()
-			buffer.GetStartIter(&iter)
-			buffer.InsertPixbuf(&iter, tweet.User.ProfileImagePixbuf)
-			gdk.ThreadsLeave()
-			gdk.ThreadsEnter()
-			buffer.Insert(&iter, " ")
-			buffer.InsertWithTag(&iter, tweet.User.Name, tag)
-			buffer.Insert(&iter, ":"+tweet.Text+"\n")
-			gtk.MainIterationDo(false)
-			gdk.ThreadsLeave()
-		})
-	})
-
-	//	button.Clicked()
-	vboxPT.Add(scrolledwinPT)
-	vboxPT.PackEnd(button, false, false, 0)
-	//--------------------------------------------------------
-	// End Public Timeline View
-	//--------------------------------------------------------
-
-	notebook.AppendPage(vboxPT, gtk.Label("Public Timeline"))
 	vbox.Add(notebook)
 
 	//--------------------------------------------------------

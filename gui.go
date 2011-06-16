@@ -31,13 +31,14 @@ func Gui() {
 	//--------------------------------------------------------
 	vboxHome := gtk.VBox(false, 1)
 	scrolledWinHome := gtk.ScrolledWindow(nil, nil)
-	scrolledWinHome.SetPolicy(gtk.GTK_POLICY_NEVER, gtk.GTK_POLICY_ALWAYS) //Disable hscrollbar, enable vscrollbar
+	//Disable hscrollbar, enable vscrollbar
+	scrolledWinHome.SetPolicy(gtk.GTK_POLICY_NEVER, gtk.GTK_POLICY_ALWAYS)
 	vboxHome.Add(scrolledWinHome)
 	vboxScrolledWinHome := gtk.VBox(false, 1)
 	scrolledWinHome.AddWithViewPort(vboxScrolledWinHome)
 
-	buttonUT := gtk.ButtonWithLabel("Update Timeline")
-	buttonUT.Clicked(func() {
+	buttonUpdateTimeline := gtk.ButtonWithLabel("Update Timeline")
+	buttonUpdateTimeline.Clicked(func() {
 		var tweet gotter.Tweet
 		tweets, err := gotter.GetTweets(accounts.Credentials, "https://api.twitter.com/1/statuses/home_timeline.json", map[string]string{})
 		if err != nil {
@@ -54,7 +55,7 @@ func Gui() {
 			}
 		}
 	})
-	vboxHome.PackEnd(buttonUT, false, false, 0)
+	vboxHome.PackEnd(buttonUpdateTimeline, false, false, 0)
 	notebook.AppendPage(vboxHome, gtk.Label("Home"))
 
 	//--------------------------------------------------------
@@ -146,13 +147,13 @@ func TweetWidget(tweet gotter.Tweet) *gtk.GtkFrame {
 		minute = (string)(strconv.Itoa(tweettime.Minute))
 	}
 	whenfromtext := gtk.Label(hour + ":" + minute)
-	//	wherefromtext := gtk.Label(tweet.Source)
+	//wherefromtext := gtk.Label(tweet.Source)
 
 	hbox.PackStart(image, false, false, 0)
 	hbox.PackEndDefaults(vbox)
 	vbox.PackStart(tweettext, false, false, 0)
 	vbox.PackEnd(whenfromtext, false, false, 0)
-	//	vbox.PackEnd(wherefromtext, false, false, 0)
+	//vbox.PackEnd(wherefromtext, false, false, 0)
 
 	frame.Add(hbox)
 

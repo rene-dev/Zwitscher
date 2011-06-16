@@ -169,10 +169,9 @@ func Gui() {
 func TweetWidget(tweet gotter.Tweet) *gtk.GtkFrame {
 	frame := gtk.Frame(tweet.User.ScreenName)
 	hbox := gtk.HBox(false, 1)
-	dir, _ := filepath.Split(os.Args[0])
-	//gtk_image_new_from_pixbuf is unsupported in go-gtk )=
-	imagefile := filepath.Join(dir, "Awesome Smiley Original.jpg")
-	image := gtk.ImageFromFile(imagefile)
+	imagePixbuf := *url2pixbuf(tweet.User.ProfileImageURL)
+	image := gtk.ImageFromPixbuf(imagePixbuf)
+
 	vbox := gtk.VBox(false, 1)
 	tweettext := gtk.TextView()
 	tweettext.SetWrapMode(gtk.GTK_WRAP_WORD)

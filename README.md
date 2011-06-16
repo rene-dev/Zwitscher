@@ -18,6 +18,10 @@ Compiling and Installing
     $ hg pull  
     $ hg update tip  
     $ ./all.bash  
+    
+  * Install iconv: goinstall github.com/sloonz/go-iconv/src
+  
+  * Install twister/oauth: goinstall github.com/garyburd/twister/oauth
 
   * Install go-gtk (don't forget to install gtk development packages before):
 

@@ -13,39 +13,6 @@ import (
 	"log"
 )
 
-type Tweet struct {
-	Text       string
-	Identifier string "id_str"
-	Source     string
-	CreatedAt  string "created_at"
-	User       struct {
-		Name               string
-		ScreenName         string "screen_name"
-		FollowersCount     int    "followers_count"
-		ProfileImageURL    string "profile_image_url"
-		ProfileImagePixbuf *gdkpixbuf.GdkPixbuf
-	}
-	Place *struct {
-		Id       string
-		FullName string "full_name"
-	}
-	Entities struct {
-		HashTags []struct {
-			Indices [2]int
-			Text    string
-		}
-		UserMentions []struct {
-			Indices    [2]int
-			ScreenName string "screen_name"
-		}    "user_mentions"
-		Urls []struct {
-			Indices [2]int
-			Url     string
-		}
-	}
-}
-
-
 type Accounts struct {
 	Name        string
 	Credentials *oauth.Credentials

@@ -1,14 +1,6 @@
 package main
 
-import (
-	"github.com/garyburd/twister/oauth"
-	)
-
-type Accounts struct {
-	Name        string
-	Credentials *oauth.Credentials
-	Maxreadid	int64
-}
+import ()
 
 var accounts Accounts
 

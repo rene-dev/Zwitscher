@@ -4,7 +4,6 @@ import (
 	"github.com/mattn/go-gtk/gdkpixbuf"
 	"http"
 	"json"
-//	"bytes"
 	"io"
 	"io/ioutil"
 	"strings"
@@ -42,7 +41,6 @@ func Connect() Accounts{
 	return account
 }
 
-
 func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
 	r, err := http.Get(url)
 	if err != nil {
@@ -68,4 +66,3 @@ func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
 func SendTweet(text string) {
 	gotter.PostTweet(accounts.Credentials, "https://api.twitter.com/1/statuses/update.json", map[string]string{"status": text})
 }
-

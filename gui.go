@@ -159,4 +159,3 @@ func TweetWidget(tweet gotter.Tweet) *gtk.GtkFrame {
 
 	return frame
 }
-

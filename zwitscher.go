@@ -9,4 +9,3 @@ func main() {
 	accounts.Maxreadid = 0
 	Gui()
 }
-

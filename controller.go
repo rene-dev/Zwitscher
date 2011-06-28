@@ -20,7 +20,7 @@ type Accounts struct {
 
 func Connect() Accounts{
 	var account Accounts
-	file, config := gotter.GetConfig()
+	file, config := gotter.GetConfig("zwitscher")
 	config["ClientToken"] = "lhCgJRAE1ECQzwVXfs5NQ"
 	config["ClientSecret"] = "qk9i30vuzWHspsRttKsYrnoKSw9XBmWHdsis76z4"
 	token, authorized, err := gotter.GetAccessToken(config)

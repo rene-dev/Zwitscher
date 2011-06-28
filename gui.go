@@ -42,7 +42,7 @@ func Gui() {
 		var tweet gotter.Tweet
 		tweets, err := gotter.GetTweets(accounts.Credentials, "https://api.twitter.com/1/statuses/home_timeline.json", map[string]string{})
 		if err != nil {
-			println("failed to get tweets:", err)
+			println("failed to get tweets:", err.String())
 		}
 		for i := len(tweets) - 1; i >= 0; i-- {
 			tweet = tweets[i]

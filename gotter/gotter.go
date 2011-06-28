@@ -136,7 +136,7 @@ func GetTweets(token *oauth.Credentials, url string, opt map[string]string) ([]T
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
-		return nil, err
+		return nil, os.NewError("Unauthorized")
 	}
 	var tweets []Tweet
 	err = json.NewDecoder(res.Body).Decode(&tweets)
@@ -200,7 +200,7 @@ func PostTweet(token *oauth.Credentials, url string, opt map[string]string) os.E
 	return nil
 }
 
-func GetConfig() (string, map[string]string) {
+func GetConfig(app string) (string, map[string]string) {
 	home := os.Getenv("HOME")
 	dir := filepath.Join(home, ".config")
 	if syscall.OS == "windows" {
@@ -213,7 +213,7 @@ func GetConfig() (string, map[string]string) {
 			log.Fatal("failed to create directory:", err)
 		}
 	}
-	dir = filepath.Join(dir, "twty")
+	dir = filepath.Join(dir, app)
 	_, err = os.Stat(dir)
 	if err != nil {
 		if os.Mkdir(dir, 0700) != nil {

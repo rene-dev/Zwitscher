@@ -31,7 +31,7 @@ func main() {
 	}
 	flag.Parse()
 
-	file, config := gotter.GetConfig()
+	file, config := gotter.GetConfig("gotter")
 	token, authorized, err := gotter.GetAccessToken(config)
 	if err != nil {
 		log.Fatal("faild to get access token:", err)
@@ -55,7 +55,7 @@ func main() {
 		}
 		gotter.ShowTweets(tweets, *verbose)
 	} else if len(*list) > 0 {
-		part := strings.Split(*list, "/", 2)
+		part := strings.SplitN(*list, "/", 2)
 		tweets, err := gotter.GetTweets(token, "https://api.twitter.com/1/"+part[0]+"/lists/"+part[1]+"/statuses.json", map[string]string{})
 		if err != nil {
 			log.Fatal("failed to get tweets:", err)

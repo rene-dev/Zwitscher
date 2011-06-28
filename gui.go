@@ -80,7 +80,7 @@ func Gui() {
 	vbox.Add(notebook)
 
 	//--------------------------------------------------------
-	// Fild for Tweets
+	// Field for Tweets
 	//--------------------------------------------------------
 	hbox := gtk.HBox(false, 1)
 
@@ -155,13 +155,17 @@ func TweetWidget(tweet gotter.Tweet) *gtk.GtkFrame {
 	}
 	whenfromtext := gtk.Label(hour + ":" + minute)
 	//wherefromtext := gtk.Label(tweet.Source)
+	replyButton := gtk.ButtonWithLabel("Reply")
+	replyButton.Clicked(func() {
+			addReply(tweet.Identifier,tweet.User.ScreenName)
+		})
 
 	hbox.PackStart(image, false, false, 0)
 	hbox.PackEndDefaults(vbox)
 	vbox.PackStart(tweettext, false, false, 0)
 	vbox.PackEnd(whenfromtext, false, false, 0)
 	//vbox.PackEnd(wherefromtext, false, false, 0)
-
+	vbox.PackEnd(replyButton, false, false, 0)
 	frame.Add(hbox)
 
 	return frame

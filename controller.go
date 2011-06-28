@@ -66,3 +66,9 @@ func url2pixbuf(url string) *gdkpixbuf.GdkPixbuf {
 func SendTweet(text string) {
 	gotter.PostTweet(accounts.Credentials, "https://api.twitter.com/1/statuses/update.json", map[string]string{"status": text})
 }
+
+func addReply(id string,name string){
+	println(name)
+	println(id)
+	//newTweetTextField.SetText("")
+}

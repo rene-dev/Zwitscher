@@ -37,20 +37,27 @@ func Gui() {
 	vboxScrolledWinHome := gtk.VBox(false, 1)
 	scrolledWinHome.AddWithViewPort(vboxScrolledWinHome)
 
+	tweetwidgets := []*gtk.GtkFrame{}
 	buttonUpdateTimeline := gtk.ButtonWithLabel("Update Timeline")
 	buttonUpdateTimeline.Clicked(func() {
 		var tweet gotter.Tweet
 		tweets, err := gotter.GetTweets(accounts.Credentials, "https://api.twitter.com/1/statuses/home_timeline.json", map[string]string{})
 		if err != nil {
-			println("failed to get tweets:", err)
+			println("failed to get tweets:", err.String())
+			return
 		}
 		for i := len(tweets) - 1; i >= 0; i-- {
 			tweet = tweets[i]
 			id, _ := strconv.Atoi64(tweet.Identifier)
 			if accounts.Maxreadid < id {
+				if len(tweetwidgets) > 20 {
+					tweetwidgets[0].Destroy()
+					tweetwidgets = tweetwidgets[1:]
+				}
 				tweetwidget := TweetWidget(tweet)
 				vboxScrolledWinHome.PackEnd(tweetwidget, false, false, 0)
 				tweetwidget.ShowAll()
+				tweetwidgets = append(tweetwidgets, tweetwidget)
 				accounts.Maxreadid = id
 			}
 		}
